@@ -7,13 +7,9 @@
         /* CSS Variables for the Theme Changer */
         :root {
             --bg-color: #f4f4f4;
-
             --text-color: #333;
-
             --snake-color: #28a745; /* Green */
-
             --canvas-bg: #fff;
-
             --border-color: #009BFF;
         }
 
@@ -23,17 +19,15 @@
             --snake-color: #8e4fd6; /* Purple */
             --canvas-bg: #111;
             --border-color: #8e4fd6;
-
         }
+
         body.theme-neon {
             --bg-color: #000000;
             --text-color: #00ffff;
             --snake-color: #ff00ff; /* Pink */
             --canvas-bg: #000;
             --border-color: #00ffff;
-
         }
-
 
         body {
             background-color: var(--bg-color);
@@ -41,7 +35,10 @@
             transition: background-color 0.3s ease, color 0.3s ease;
             font-family: Arial, sans-serif;
             text-align: center; 
+            margin: 0;
+            padding-top: 20px;
         }
+
         canvas {
             display: block;
             position: absolute;
@@ -56,7 +53,6 @@
         }
 
         /* Settings Menu Styling */
-
         .game-settings {
             margin: 20px auto;
             padding: 15px;
@@ -64,9 +60,10 @@
             display: inline-block;
             border-radius: 8px;
             text-align: left;
-
+            background-color: var(--canvas-bg);
+            transition: all 0.3s ease;
         }
-
+        
         #gameOverScreen {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -78,7 +75,6 @@
             justify-content: center;
             align-items: center;
             z-index: 10;
-
         }
 
         #gameOverScreen h1 {
@@ -86,6 +82,7 @@
             margin-bottom: 10px;
             color: var(--border-color);
         }
+
         #restartBtn {
             margin-top: 20px;
             padding: 10px 20px;
@@ -96,10 +93,84 @@
             color: white;
             border: none;
             border-radius: 5px;
+            transition: background-color 0.2s;
         }
+
+        #restartBtn:hover {
+            opacity: 0.8;
+        }
+
         .hidden {
             display: none !important;
         }
     </style>
 </head>
-</html>
+<body>
+
+    <div class="game-settings">
+        <label for="themeSelect" style="font-weight: bold;">Select Theme:</label>
+        <select id="themeSelect">
+            <option value="classic">Classic Green</option>
+            <option value="dark">Dark Mode</option>
+            <option value="neon">Neon</option>
+        </select>
+        <span style="margin-left: 20px; font-weight: bold;">Score: <span id="currentScore">0</span></span>
+    </div>
+
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
+
+    <div id="gameOverScreen" class="hidden">
+        <h1>GAME OVER</h1>
+        <p style="font-size: 1.5rem;">Final Score: <span id="finalScore">0</span></p>
+        <button id="restartBtn">Play Again</button>
+    </div>
+
+    <script>
+        // Game Constants & Variables
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+        const gridSize = 20;
+        const tileCount = canvas.width / gridSize;
+        
+        let snake = [];
+        let snakeLength = 3;
+        let foodX = 10;
+        let foodY = 10;
+        let velocityX = 0;
+        let velocityY = 0;
+        let score = 0;
+        let isGameOver = false;
+        let gameLoop;
+
+        // UI Elements
+        const currentScoreEl = document.getElementById("currentScore");
+        const gameOverScreen = document.getElementById("gameOverScreen");
+        const finalScoreEl = document.getElementById("finalScore");
+        const restartBtn = document.getElementById("restartBtn");
+        const themeSelect = document.getElementById("themeSelect");
+
+        // Start Game
+        function initGame() {
+            snake = [];
+            snakeLength = 3;
+            score = 0;
+            velocityX = 0;
+            velocityY = 0;
+            isGameOver = false;
+            
+            // Start snake in the middle
+            snake.push({x: Math.floor(tileCount/2), y: Math.floor(tileCount/2)});
+            
+            placeFood();
+            gameOverScreen.classList.add("hidden");
+            currentScoreEl.innerText = score;
+            
+            clearInterval(gameLoop);
+            gameLoop = setInterval(update, 1000 / 10); // 10 FPS
+        }
+
+        function update() {
+            if (isGameOver) return;
+
+            // Move Snake
+            let headX = snake
