@@ -7,35 +7,62 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="styles/game.css" rel="stylesheet">
 </head>
+    
 <body>
+  <header class="py-4 bg-light border-bottom">
+      <div class="text-center mb-4">
+          <div class="d-flex justify-content-center align-items-center gap-3">
+              <h1 class="display-5 fw-bold site-title m-0">UNCAFFEINATED SNAKE GAME</h1>
+          </div>
+          <p class="text-muted fst-italic mt-2 mb-0">Now with more snake</p>
+      </div>
+      <nav>
+          <ul class="d-flex justify-content-center gap-4 list-unstyled mb-0 fw-semibold">
+              <li><a href="pages/how-play.html" class="text-dark text-decoration-none">How to play</a></li>
+              <li><a href="index.html" class="text-dark text-decoration-none">Play/Rest</a></li>
+              <li><a href="pages/leaderboard.html" class="text-dark text-decoration-none">Leaderboard</a></li>
+          </ul>
+      </nav>
+  </header>
 
-    <header class="py-4 bg-light border-bottom">
-        <div class="text-center mb-4">
-            <div class="d-flex justify-content-center align-items-center gap-3">
-                <h1 class="display-5 fw-bold site-title m-0">UNCAFFEINATED SNAKE GAME</h1>
+  <main class="container mt-5">
+    <div id="startScreen" class="text-center">
+        <h2>Ready to Play?</h2>
+        <button id="startBtn" class="arcade-button" style="background-color: #28a745; border-color: #1e7e34; box-shadow: 0px 6px 0px #1e7e34;">START GAME</button>
+    </div>
+
+    <div aria-live="polite" id="game-announcer" class="visually-hidden"></div>
+
+    <div id="game-section" class="hidden text-center" style="margin-top: 20px;">
+        <div class="game-settings">
+            <div class="mb-2">
+                <label for="playerName"><strong>Player Name:</strong></label>
+                <input type="text" id="playerName" placeholder="Enter your name">
+                <button id="saveNameBtn" class="btn btn-sm btn-primary" style="background-color: #8e4fd6; border: none;">Save</button>
+                <span id="greetingMessage" class="ms-2 fw-bold"></span>
             </div>
-            <p class="text-muted fst-italic mt-2 mb-0">Now with more snake</p>
+            <div>
+                <label for="themeSelect"><strong>Select Theme:</strong></label>
+                <select id="themeSelect">
+                    <option value="classic">Classic Green</option>
+                    <option value="dark">Dark Mode</option>
+                    <option value="neon">Neon</option>
+                </select>
+            </div>
         </div>
-        <nav>
-            <ul class="d-flex justify-content-center gap-4 list-unstyled mb-0 fw-semibold">
-                <li><a href="pages/how-play.html" class="text-dark text-decoration-none">How to play</a></li>
-                <li><a href="index.html" class="text-dark text-decoration-none">Play/Rest</a></li>
-                <li><a href="pages/my-work.html" class="text-dark text-decoration-none">Dev Profile</a></li>
-                <li><a href="pages/leaderboard.html" class="text-dark text-decoration-none">Leaderboard</a></li>
-            </ul>
-        </nav>
-    </header>
 
-    <main class="container mt-5">
-        <p class="lead">Ready to start? Press the button below to play the game.</p>
-        <a href="pages/game.html" class="arcade-button">Play the Snake Game</a>
-    </main>
+        <div id="gameOverScreen" class="hidden">
+            <h1 style="color: #ff4444;">GAME OVER</h1>
+            <p>Final Score: <span id="finalScore" class="fw-bold fs-4">0</span></p>
+            <button id="restartBtn" class="arcade-button">Play Again</button>
+        </div>
+    </div>
+  </main>
 
-    <footer class="mt-5 pt-4 border-top">
-        <a href="https://github.com/AJuna345/snake-game" target="_blank" class="text-muted text-decoration-none">
-            Game Repository on GitHub
-        </a>
-    </footer>
-
+  <footer class="mt-5 pt-4 border-top">
+      <a href="https://github.com/AJuna345/snake-game" target="_blank" class="text-muted text-decoration-none">
+          Game Repository on GitHub
+      </a>
+  </footer>
 </body>
 </html>
