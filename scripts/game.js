@@ -227,19 +227,18 @@ if (themeSelect) {
 }
 
 // 11. Start Game Logic
-document.getElementById("startBtn").addEventListener("click", function() {
-    document.getElementById("startScreen").classList.add("hidden");
-    document.getElementById("game-section").classList.remove("hidden");
-    main();
-});
-
 document.addEventListener("DOMContentLoaded", function() {
     const startBtn = document.getElementById("startBtn");
     if (startBtn) {
         startBtn.addEventListener("click", function() {
+            // Hide the start screen and show the game
             document.getElementById("startScreen").classList.add("hidden");
             document.getElementById("game-section").classList.remove("hidden");
-            main(); 
+            
+            // Start the actual game engine
+            if (typeof main === "function") {
+                main(); 
+            }
         });
     }
 });
