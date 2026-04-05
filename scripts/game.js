@@ -136,6 +136,13 @@ function update() {
             isGameOver = true; 
             document.getElementById("finalScore").innerText = score; 
             document.getElementById("gameOverScreen").classList.remove("hidden"); 
+            
+            // Screen reader accessibility announcement
+            const announcer = document.getElementById("game-announcer");
+            if (announcer) {
+                announcer.textContent = "Game over! Your final score is " + score;
+            }
+            
             return; 
         }
 
@@ -167,3 +174,61 @@ function draw() {
             ctx.fillRect(x * tw, y * th, tw, th);
         }
     }
+
+    ctx.fillStyle = currentTextColor;
+    ctx.fillText("SCORE: " + score, 10, canvas.height - 10);
+}
+
+// Event Listeners for Game Restart
+document.getElementById("restartBtn").addEventListener("click", function() {
+    document.getElementById("gameOverScreen").classList.add("hidden"); 
+    init(); 
+});
+
+// 10. LocalStorage Logic (Theme and Name Saver)
+const nameInput = document.getElementById('playerName');
+const saveBtn = document.getElementById('saveNameBtn');
+const greeting = document.getElementById('greetingMessage');
+
+const savedName = localStorage.getItem('snakePlayerName');
+if (savedName) {
+    nameInput.value = savedName;
+    greeting.textContent = `Welcome back, ${savedName}!`;
+}
+
+if (saveBtn) {
+    saveBtn.addEventListener('click', () => {
+        const currentName = nameInput.value.trim();
+        if (currentName !== "") {
+            localStorage.setItem('snakePlayerName', currentName);
+            greeting.textContent = `Name saved as ${currentName}!`;
+        }
+    });
+}
+
+const themeSelect = document.getElementById('themeSelect');
+if (themeSelect) {
+    const savedTheme = localStorage.getItem('snakeTheme') || 'classic';
+    themeSelect.value = savedTheme;
+    document.body.className = `theme-${savedTheme}`;
+    
+    setTimeout(updateThemeColors, 50);
+
+    themeSelect.addEventListener('change', (event) => {
+        const selectedTheme = event.target.value;
+        document.body.className = `theme-${selectedTheme}`;
+        localStorage.setItem('snakeTheme', selectedTheme);
+        
+        setTimeout(() => {
+            updateThemeColors(); 
+            if (canvas && ctx) draw();
+        }, 50);
+    });
+}
+
+// 11. Start Game
+document.getElementById("startBtn").addEventListener("click", function() {
+    document.getElementById("startScreen").classList.add("hidden");
+    document.getElementById("game-section").classList.remove("hidden");
+    main();
+});
