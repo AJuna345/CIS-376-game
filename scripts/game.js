@@ -251,8 +251,44 @@ document.addEventListener("DOMContentLoaded", function() {
             // Start the actual game engine
             if (typeof main === "function") {
                 main(); 
-            }
+            }// Inside your existing name-loading logic
+const savedName = localStorage.getItem('snakePlayerName');
+if (savedName) {
+    nameInput.value = savedName;
+    greeting.textContent = `Welcome back, ${savedName}!`;
+    
+    // If they are already Garfield, make sure the theme is available
+    if (savedName.toLowerCase() === "garfield") {
+        unlockGarfieldTheme();
+    }
+}
         });
     }
 });
 
+function unlockGarfieldTheme() {
+    const themeSelect = document.getElementById('themeSelect');
+    
+    // Check if the option already exists to avoid duplicates
+    let garfieldOption = themeSelect.querySelector('option[value="garfield"]');
+    
+    if (!garfieldOption) {
+        garfieldOption = document.createElement('option');
+        garfieldOption.value = 'garfield';
+        garfieldOption.textContent = 'Garfield (Monday Mode)';
+        themeSelect.appendChild(garfieldOption);
+    }
+
+    // Automatically switch to the secret theme
+    themeSelect.value = 'garfield';
+    document.body.className = 'theme-garfield';
+    localStorage.setItem('snakeTheme', 'garfield');
+    
+    // Update the game colors
+    setTimeout(() => {
+        updateThemeColors();
+        if (canvas && ctx && !isGameOver) draw();
+    }, 50);
+    
+    alert("Secret Theme Unlocked: I Hate Mondays!");
+}
