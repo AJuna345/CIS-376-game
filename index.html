@@ -27,39 +27,60 @@
   </header>
 
   <main class="container mt-5">
-    <div id="startScreen" class="text-center">
-        <h2>Ready to Play?</h2>
-        <button id="startBtn" class="arcade-button" style="background-color: #28a745; border-color: #1e7e34; box-shadow: 0px 6px 0px #1e7e34;">START GAME</button>
-    </div>
-
-    <div aria-live="polite" id="game-announcer" class="visually-hidden"></div>
-
-    <div id="game-section" class="text-center" style="margin-top: 20px;">
-        <div class="game-settings">
-            <div class="mb-2">
-                <label for="playerName"><strong>Player Name:</strong></label>
-                <input type="text" id="playerName" placeholder="Enter your name">
-                <button id="saveNameBtn" class="btn btn-sm btn-primary" style="background-color: #8e4fd6; border: none;">Save</button>
-                <span id="greetingMessage" class="ms-2 fw-bold"></span>
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <div id="startScreen">
+                <h2>Ready to Play?</h2>
+                <button id="startBtn" class="arcade-button" style="background-color: #28a745; border-color: #1e7e34; box-shadow: 0px 6px 0px #1e7e34;">START GAME</button>
             </div>
-            <div>
-                <label for="themeSelect"><strong>Select Theme:</strong></label>
-                <select id="themeSelect">
-                    <option value="classic">Classic Green</option>
-                    <option value="dark">Dark Mode</option>
-                    <option value="neon">Neon</option>
-                    <option value="garfield">Garfield (Monday Mode)</option>
-                </select>
+
+            <div aria-live="polite" id="game-announcer" class="visually-hidden"></div>
+
+            <div id="game-section" class="hidden" style="margin-top: 20px;">
+                <div id="gameOverScreen" class="hidden">
+                    <h1 style="color: #ff4444;">GAME OVER</h1>
+                    <p>Final Score: <span id="finalScore" class="fw-bold fs-4">0</span></p>
+                    <button id="restartBtn" class="arcade-button">Play Again</button>
+                </div>
             </div>
         </div>
 
-        <div id="gameOverScreen" class="hidden">
-            <h1 style="color: #ff4444;">GAME OVER</h1>
-            <p>Final Score: <span id="finalScore" class="fw-bold fs-4">0</span></p>
-            <button id="restartBtn" class="arcade-button">Play Again</button>
+        <div class="col-md-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">How to Play</h5>
+                    <ul class="list-unstyled">
+                        <li><strong>UP:</strong> <kbd>↑</kbd></li>
+                        <li><strong>DOWN:</strong> <kbd>↓</kbd></li>
+                        <li><strong>LEFT:</strong> <kbd>←</kbd></li>
+                        <li><strong>RIGHT:</strong> <kbd>→</kbd></li>
+                    </ul>
+                    <hr>
+                    <p class="small text-muted">Eat the red squares to grow. Don't hit the walls or yourself!</p>
+                </div>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="playerName"><strong>Player Name:</strong></label>
+                        <input type="text" id="playerName" class="form-control form-control-sm" placeholder="Enter your name">
+                        <button id="saveNameBtn" class="btn btn-sm btn-primary mt-2 w-100" style="background-color: #8e4fd6; border: none;">Save Name</button>
+                        <div id="greetingMessage" class="mt-2 small fw-bold text-center"></div>
+                    </div>
+                    <div>
+                        <label for="themeSelect"><strong>Select Theme:</strong></label>
+                        <select id="themeSelect" class="form-select form-select-sm">
+                            <option value="classic">Classic Green</option>
+                            <option value="dark">Dark Mode</option>
+                            <option value="neon">Neon</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-  </main>
+</main>
 
   <footer class="mt-5 pt-4 border-top">
       <a href="https://github.com/AJuna345/snake-game" target="_blank" class="text-muted text-decoration-none">
