@@ -319,4 +319,19 @@ function unlockGarfieldTheme() {
     }, 50);
     
     alert("Secret Theme Unlocked: I Hate Mondays!");
+    
+}
+/* Sidebar Styling */
+.card {
+    background-color: var(--canvas-bg);
+    border: 2px solid var(--border-color);
+    color: var(--text-color);
+    transition: all 0.3s ease;
+}
+
+kbd {
+    background-color: var(--border-color);
+    color: var(--canvas-bg);
+    padding: 2px 6px;
+    border-radius: 4px;
 }
