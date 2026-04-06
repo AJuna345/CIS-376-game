@@ -102,3 +102,18 @@ body.theme-garfield {
     --canvas-bg: #fff5e6;     
     --border-color: #543200; 
 }
+/* Ensure Sidebar Cards match the theme colors */
+.card {
+    background-color: var(--canvas-bg);
+    border: 2px solid var(--border-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Style the keyboard key icons */
+kbd {
+    background-color: var(--border-color);
+    color: var(--canvas-bg);
+    padding: 2px 5px;
+    font-size: 0.9rem;
+}
