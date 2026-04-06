@@ -335,3 +335,9 @@ kbd {
     padding: 2px 6px;
     border-radius: 4px;
 }
+// In game.js, inside function main()
+var gameSection = document.getElementById("game-section");
+var gameOverDiv = document.getElementById("gameOverScreen");
+
+// This will now insert the canvas inside the new left-hand column
+gameSection.insertBefore(canvas, gameOverDiv);
