@@ -130,6 +130,16 @@ function update() {
             case DOWN: ny++; break;
         }
 
+function update() {
+    frames++;
+
+
+    if (frames % speedValue === 0) {
+        var nx = snake.last.x;
+        var ny = snake.last.y;
+        // ... (rest of the movement logic)
+    }
+}
         // Game Over Check
         if (0 > nx || nx > grid.width-1 || 0 > ny || ny > grid.height-1 || grid.get(nx, ny) === SNAKE) {
             isGameOver = true; 
