@@ -64,6 +64,7 @@ function main() {
     canvas.height = ROWS * 20;
     ctx = canvas.getContext("2d");
     
+    // Updated for your new Bootstrap Column Layout
     var gameSection = document.getElementById("game-section");
     var gameOverDiv = document.getElementById("gameOverScreen");
     gameSection.insertBefore(canvas, gameOverDiv);
@@ -133,7 +134,8 @@ function update() {
         if (0 > nx || nx > grid.width-1 || 0 > ny || ny > grid.height-1 || grid.get(nx, ny) === SNAKE) {
             isGameOver = true; 
             
-            saveHighScore(score); // Save to leaderboard
+            // SAVE SCORE LOGIC
+            saveHighScore(score);
 
             document.getElementById("finalScore").innerText = score; 
             document.getElementById("gameOverScreen").classList.remove("hidden"); 
@@ -182,21 +184,82 @@ function draw() {
             ctx.fillRect(x * tw, y * th, tw, th);
         }
     }
-
     ctx.fillStyle = currentTextColor;
     ctx.fillText("SCORE: " + score, 10, canvas.height - 10);
 }
 
-// 10. UI & LocalStorage Logic
+// 10. Logic & Event Listeners
+document.getElementById("restartBtn").addEventListener("click", function() {
+    document.getElementById("gameOverScreen").classList.add("hidden"); 
+    init(); 
+});
+
+const nameInput = document.getElementById('playerName');
+const saveBtn = document.getElementById('saveNameBtn');
+const greeting = document.getElementById('greetingMessage');
+
+// Load saved name and check for Garfield
+const savedName = localStorage.getItem('snakePlayerName');
+if (savedName) {
+    nameInput.value = savedName;
+    greeting.textContent = `Welcome back, ${savedName}!`;
+    if (savedName.toLowerCase() === "garfield") {
+        unlockGarfieldTheme();
+    }
+}
+
+if (saveBtn) {
+    saveBtn.addEventListener('click', () => {
+        const currentName = nameInput.value.trim();
+        if (currentName !== "") {
+            localStorage.setItem('snakePlayerName', currentName);
+            greeting.textContent = `Name saved as ${currentName}!`;
+            if (currentName.toLowerCase() === "garfield") {
+                unlockGarfieldTheme();
+            }
+        }
+    });
+}
+
+const themeSelect = document.getElementById('themeSelect');
+if (themeSelect) {
+    const savedTheme = localStorage.getItem('snakeTheme') || 'classic';
+    themeSelect.value = savedTheme;
+    document.body.className = `theme-${savedTheme}`;
+    setTimeout(updateThemeColors, 50);
+
+    themeSelect.addEventListener('change', (event) => {
+        const selectedTheme = event.target.value;
+        document.body.className = `theme-${selectedTheme}`;
+        localStorage.setItem('snakeTheme', selectedTheme);
+        setTimeout(() => {
+            updateThemeColors(); 
+            if (canvas && ctx && !isGameOver) draw();
+        }, 50);
+    });
+}
+
+function unlockGarfieldTheme() {
+    const themeSelect = document.getElementById('themeSelect');
+    let garfieldOption = themeSelect.querySelector('option[value="garfield"]');
+    if (!garfieldOption) {
+        garfieldOption = document.createElement('option');
+        garfieldOption.value = 'garfield';
+        garfieldOption.textContent = 'Garfield (Monday Mode)';
+        themeSelect.appendChild(garfieldOption);
+    }
+    themeSelect.value = 'garfield';
+    document.body.className = 'theme-garfield';
+    localStorage.setItem('snakeTheme', 'garfield');
+    setTimeout(() => {
+        updateThemeColors();
+        if (canvas && ctx && !isGameOver) draw();
+    }, 50);
+}
+
+// 11. Start Game Logic
 document.addEventListener("DOMContentLoaded", function() {
     const startBtn = document.getElementById("startBtn");
-    const restartBtn = document.getElementById("restartBtn");
-    const nameInput = document.getElementById('playerName');
-    const saveBtn = document.getElementById('saveNameBtn');
-    const greeting = document.getElementById('greetingMessage');
-    const themeSelect = document.getElementById('themeSelect');
-
-    // Start Button Listener
     if (startBtn) {
         startBtn.addEventListener("click", function() {
             document.getElementById("startScreen").classList.add("hidden");
@@ -204,71 +267,4 @@ document.addEventListener("DOMContentLoaded", function() {
             main(); 
         });
     }
-
-    // Restart Button Listener
-    if (restartBtn) {
-        restartBtn.addEventListener("click", function() {
-            document.getElementById("gameOverScreen").classList.add("hidden"); 
-            init(); 
-        });
-    }
-
-    // Load Saved Name
-    const savedName = localStorage.getItem('snakePlayerName');
-    if (savedName) {
-        nameInput.value = savedName;
-        greeting.textContent = `Welcome back, ${savedName}!`;
-        if (savedName.toLowerCase() === "garfield") unlockGarfieldTheme();
-    }
-
-    // Save Name Button
-    if (saveBtn) {
-        saveBtn.addEventListener('click', () => {
-            const currentName = nameInput.value.trim();
-            if (currentName !== "") {
-                localStorage.setItem('snakePlayerName', currentName);
-                greeting.textContent = `Name saved as ${currentName}!`;
-                if (currentName.toLowerCase() === "garfield") unlockGarfieldTheme();
-            }
-        });
-    }
-
-    // Theme Selection
-    if (themeSelect) {
-        const savedTheme = localStorage.getItem('snakeTheme') || 'classic';
-        themeSelect.value = savedTheme;
-        document.body.className = `theme-${savedTheme}`;
-        setTimeout(updateThemeColors, 50);
-
-        themeSelect.addEventListener('change', (event) => {
-            const selectedTheme = event.target.value;
-            document.body.className = `theme-${selectedTheme}`;
-            localStorage.setItem('snakeTheme', selectedTheme);
-            setTimeout(() => {
-                updateThemeColors(); 
-                if (canvas && ctx) draw();
-            }, 50);
-        });
-    }
 });
-
-function unlockGarfieldTheme() {
-    const themeSelect = document.getElementById('themeSelect');
-    let garfieldOption = themeSelect.querySelector('option[value="garfield"]');
-    
-    if (!garfieldOption) {
-        garfieldOption = document.createElement('option');
-        garfieldOption.value = 'garfield';
-        garfieldOption.textContent = 'Garfield (Monday Mode)';
-        themeSelect.appendChild(garfieldOption);
-    }
-
-    themeSelect.value = 'garfield';
-    document.body.className = 'theme-garfield';
-    localStorage.setItem('snakeTheme', 'garfield');
-    
-    setTimeout(() => {
-        updateThemeColors();
-        if (canvas && ctx && !isGameOver) draw();
-    }, 50);
-}
