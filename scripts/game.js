@@ -321,12 +321,12 @@ function unlockGarfieldTheme() {
     alert("Secret Theme Unlocked: I Hate Mondays!");
     
 }
-card {
+card 
     background-color: var(--canvas-bg);
     border: 2px solid var(--border-color);
     color: var(--text-color);
     transition: all 0.3s ease;
-}
+
 
 kbd {
     background-color: var(--border-color);
