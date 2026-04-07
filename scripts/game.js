@@ -321,8 +321,7 @@ function unlockGarfieldTheme() {
     alert("Secret Theme Unlocked: I Hate Mondays!");
     
 }
-/* Sidebar Styling */
-.card {
+card {
     background-color: var(--canvas-bg);
     border: 2px solid var(--border-color);
     color: var(--text-color);
