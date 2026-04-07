@@ -59,13 +59,11 @@ function setFood() {
 
 // 5. Main Setup
 function main() {
-    // Create the canvas element ONLY after the start button is pushed
     canvas = document.createElement("canvas");
     canvas.width = COLS * 20;
     canvas.height = ROWS * 20;
     ctx = canvas.getContext("2d");
     
-    // Insert canvas directly above the Game Over screen
     var gameSection = document.getElementById("game-section");
     var gameOverDiv = document.getElementById("gameOverScreen");
     gameSection.insertBefore(canvas, gameOverDiv);
@@ -76,7 +74,6 @@ function main() {
 
     document.addEventListener("keydown", function(evt) {
         if (document.activeElement.tagName === "INPUT") return;
-
         if([37, 38, 39, 40].indexOf(evt.keyCode) > -1) {
             evt.preventDefault();
         }
@@ -132,45 +129,19 @@ function update() {
             case DOWN: ny++; break;
         }
 
+        // Game Over Check
         if (0 > nx || nx > grid.width-1 || 0 > ny || ny > grid.height-1 || grid.get(nx, ny) === SNAKE) {
             isGameOver = true; 
+            
+            saveHighScore(score); // Save to leaderboard
+
             document.getElementById("finalScore").innerText = score; 
             document.getElementById("gameOverScreen").classList.remove("hidden"); 
-            // Inside the Game Over check in update()
-if (0 > nx || nx > grid.width-1 || 0 > ny || ny > grid.height-1 || grid.get(nx, ny) === SNAKE) {
-    isGameOver = true;
-    
-    // SAVE SCORE LOGIC
-    saveHighScore(score);
-
-    document.getElementById("finalScore").innerText = score;
-    document.getElementById("gameOverScreen").classList.remove("hidden");
-    return;
-}
-
-function saveHighScore(latestScore) {
-    // Get the name from your nameInput field
-    const name = document.getElementById('playerName').value.trim() || "Anonymous";
-    
-    // Get existing scores or start a new list
-    let highScores = JSON.parse(localStorage.getItem('snakeLeaderboard')) || [];
-    
-    // Add the new score
-    highScores.push({ name: name, score: latestScore });
-    
-    // Sort Highest to Lowest and keep only top 10
-    highScores.sort((a, b) => b.score - a.score);
-    highScores = highScores.slice(0, 10);
-    
-    // Save back to localStorage
-    localStorage.setItem('snakeLeaderboard', JSON.stringify(highScores));
-}
-            // Screen reader accessibility announcement
+            
             const announcer = document.getElementById("game-announcer");
             if (announcer) {
                 announcer.textContent = "Game over! Your final score is " + score;
             }
-            
             return; 
         }
 
@@ -185,6 +156,15 @@ function saveHighScore(latestScore) {
         grid.set(SNAKE, nx, ny);
         snake.insert(nx, ny);
     }
+}
+
+function saveHighScore(latestScore) {
+    const name = document.getElementById('playerName').value.trim() || "Anonymous";
+    let highScores = JSON.parse(localStorage.getItem('snakeLeaderboard')) || [];
+    highScores.push({ name: name, score: latestScore });
+    highScores.sort((a, b) => b.score - a.score);
+    highScores = highScores.slice(0, 10);
+    localStorage.setItem('snakeLeaderboard', JSON.stringify(highScores));
 }
 
 // 9. Draw Everything
@@ -207,97 +187,73 @@ function draw() {
     ctx.fillText("SCORE: " + score, 10, canvas.height - 10);
 }
 
-// Event Listeners for Game Restart
-document.getElementById("restartBtn").addEventListener("click", function() {
-    document.getElementById("gameOverScreen").classList.add("hidden"); 
-    init(); 
-});
-
-// 10. LocalStorage Logic (Theme and Name Saver)
-const nameInput = document.getElementById('playerName');
-const saveBtn = document.getElementById('saveNameBtn');
-const greeting = document.getElementById('greetingMessage');
-
-const savedName = localStorage.getItem('snakePlayerName');
-if (savedName) {
-    nameInput.value = savedName;
-    greeting.textContent = `Welcome back, ${savedName}!`;
-}
-
-if (saveBtn) {
-    saveBtn.addEventListener('click', () => {
-        const currentName = nameInput.value.trim();
-        if (currentName !== "") {
-            localStorage.setItem('snakePlayerName', currentName);
-            greeting.textContent = `Name saved as ${currentName}!`;
-        }
-    });
-}
-
-const themeSelect = document.getElementById('themeSelect');
-if (themeSelect) {
-    const savedTheme = localStorage.getItem('snakeTheme') || 'classic';
-    themeSelect.value = savedTheme;
-    document.body.className = `theme-${savedTheme}`;
-    
-    setTimeout(updateThemeColors, 50);
-
-    themeSelect.addEventListener('change', (event) => {
-        const selectedTheme = event.target.value;
-        document.body.className = `theme-${selectedTheme}`;
-        localStorage.setItem('snakeTheme', selectedTheme);
-        
-        setTimeout(() => {
-            updateThemeColors(); 
-            if (canvas && ctx) draw();
-        }, 50);
-    });
-}
-if (saveBtn) {
-    saveBtn.addEventListener('click', () => {
-        const currentName = nameInput.value.trim();
-        if (currentName !== "") {
-            localStorage.setItem('snakePlayerName', currentName);
-            greeting.textContent = `Name saved as ${currentName}!`;
-
-            // Secret Unlock Logic
-            if (currentName.toLowerCase() === "garfield") {
-                unlockGarfieldTheme();
-            }
-        }
-    });
-}
-// 11. Start Game Logic
+// 10. UI & LocalStorage Logic
 document.addEventListener("DOMContentLoaded", function() {
     const startBtn = document.getElementById("startBtn");
+    const restartBtn = document.getElementById("restartBtn");
+    const nameInput = document.getElementById('playerName');
+    const saveBtn = document.getElementById('saveNameBtn');
+    const greeting = document.getElementById('greetingMessage');
+    const themeSelect = document.getElementById('themeSelect');
+
+    // Start Button Listener
     if (startBtn) {
         startBtn.addEventListener("click", function() {
-            // Hide the start screen and show the game
             document.getElementById("startScreen").classList.add("hidden");
             document.getElementById("game-section").classList.remove("hidden");
-            
-            // Start the actual game engine
-            if (typeof main === "function") {
-                main(); 
-            }// Inside your existing name-loading logic
-const savedName = localStorage.getItem('snakePlayerName');
-if (savedName) {
-    nameInput.value = savedName;
-    greeting.textContent = `Welcome back, ${savedName}!`;
-    
-    // If they are already Garfield, make sure the theme is available
-    if (savedName.toLowerCase() === "garfield") {
-        unlockGarfieldTheme();
+            main(); 
+        });
     }
-}
+
+    // Restart Button Listener
+    if (restartBtn) {
+        restartBtn.addEventListener("click", function() {
+            document.getElementById("gameOverScreen").classList.add("hidden"); 
+            init(); 
+        });
+    }
+
+    // Load Saved Name
+    const savedName = localStorage.getItem('snakePlayerName');
+    if (savedName) {
+        nameInput.value = savedName;
+        greeting.textContent = `Welcome back, ${savedName}!`;
+        if (savedName.toLowerCase() === "garfield") unlockGarfieldTheme();
+    }
+
+    // Save Name Button
+    if (saveBtn) {
+        saveBtn.addEventListener('click', () => {
+            const currentName = nameInput.value.trim();
+            if (currentName !== "") {
+                localStorage.setItem('snakePlayerName', currentName);
+                greeting.textContent = `Name saved as ${currentName}!`;
+                if (currentName.toLowerCase() === "garfield") unlockGarfieldTheme();
+            }
+        });
+    }
+
+    // Theme Selection
+    if (themeSelect) {
+        const savedTheme = localStorage.getItem('snakeTheme') || 'classic';
+        themeSelect.value = savedTheme;
+        document.body.className = `theme-${savedTheme}`;
+        setTimeout(updateThemeColors, 50);
+
+        themeSelect.addEventListener('change', (event) => {
+            const selectedTheme = event.target.value;
+            document.body.className = `theme-${selectedTheme}`;
+            localStorage.setItem('snakeTheme', selectedTheme);
+            setTimeout(() => {
+                updateThemeColors(); 
+                if (canvas && ctx) draw();
+            }, 50);
         });
     }
 });
 
 function unlockGarfieldTheme() {
     const themeSelect = document.getElementById('themeSelect');
-    
-    // Check if the option already exists to avoid duplicates
     let garfieldOption = themeSelect.querySelector('option[value="garfield"]');
     
     if (!garfieldOption) {
@@ -307,36 +263,12 @@ function unlockGarfieldTheme() {
         themeSelect.appendChild(garfieldOption);
     }
 
-    // Automatically switch to the secret theme
     themeSelect.value = 'garfield';
     document.body.className = 'theme-garfield';
     localStorage.setItem('snakeTheme', 'garfield');
     
-    // Update the game colors
     setTimeout(() => {
         updateThemeColors();
         if (canvas && ctx && !isGameOver) draw();
     }, 50);
-    
-    alert("Secret Theme Unlocked: I Hate Mondays!");
-    
 }
-card 
-    background-color: var(--canvas-bg);
-    border: 2px solid var(--border-color);
-    color: var(--text-color);
-    transition: all 0.3s ease;
-
-
-kbd {
-    background-color: var(--border-color);
-    color: var(--canvas-bg);
-    padding: 2px 6px;
-    border-radius: 4px;
-}
-// In game.js, inside function main()
-var gameSection = document.getElementById("game-section");
-var gameOverDiv = document.getElementById("gameOverScreen");
-
-// This will now insert the canvas inside the new left-hand column
-gameSection.insertBefore(canvas, gameOverDiv);
