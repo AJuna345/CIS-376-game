@@ -8,6 +8,11 @@
     <link href="../styles/game.css" rel="stylesheet">
 </head>
 <body class="theme-classic">
+    
+    <script>
+        const savedTheme = localStorage.getItem('snakeTheme') || 'classic';
+        document.body.className = `theme-${savedTheme}`;
+    </script>
 
     <header class="py-4 border-bottom">
         <div class="text-center mb-4">
