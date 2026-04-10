@@ -1,8 +1,8 @@
 // 1. Setup Constants and Variables
 var COLS = 26, ROWS = 26;
 var EMPTY = 0, SNAKE = 1, FRUIT = 2;
-var LEFT  = 0, UP    = 1, RIGHT = 2, DOWN  = 3;
-var KEY_LEFT  = 37, KEY_UP    = 38, KEY_RIGHT = 39, KEY_DOWN  = 40;
+var LEFT  = 0, RIGHT = 1, UP = 2, DOWN  = 3;
+var KEY_LEFT  = 37, KEY_RIGHT = 39, KEY_UP = 38, KEY_DOWN  = 40;
 var canvas, ctx, keystate, frames, score, isGameOver; 
 var speedValue = 7; // Default speed (Normal)
 
