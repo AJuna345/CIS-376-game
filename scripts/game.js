@@ -100,13 +100,12 @@ function init() {
     setFood();
 }
 
-// 7. The Game Loop
 function playGame() {
     if (!gameOver) {
         update();
         draw();
     }
-    window.requestAnimationFrame(loop);
+    window.requestAnimationFrame(playGame);
 }
 
 function update() {
