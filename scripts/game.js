@@ -1,9 +1,10 @@
 // 1. Setup Constants and Variables
-var COLS = 26, ROWS = 26;
-var EMPTY = 0, SNAKE = 1, FRUIT = 2;
-var LEFT  = 0, RIGHT = 1, UP = 2, DOWN  = 3;
-var KEY_LEFT = 37, KEY_RIGHT = 39, KEY_UP = 38, KEY_DOWN  = 40;
-var canvas, ctx, keystate, frames, score, isGameOver; 
+var COLS = 26, ROWS = 26,
+    EMPTY = 0, SNAKE = 1, FRUIT = 2,
+    LEFT  = 0, UP    = 1, RIGHT = 2, DOWN  = 3,
+    KEY_LEFT  = 37, KEY_UP    = 38, KEY_RIGHT = 39, KEY_DOWN  = 40,
+    canvas, ctx, keystate, frames, score, isGameOver; 
+
 var speedValue = 7; // Default speed
 
 // Cached Theme Colors
@@ -55,7 +56,7 @@ function setFood() {
     }
     if (empty.length === 0) return; 
     var randpos = empty[Math.floor(Math.random() * empty.length)];
-    grid.set(FOOD, randpos.x, randpos.y);
+    grid.set(FRUIT, randpos.x, randpos.y);
 }
 
 // 5. Main Setup
@@ -110,7 +111,7 @@ function loop() {
     window.requestAnimationFrame(loop);
 }
 
-// 8. Update Logic
+// 8. Update Logic - FIXED: Integrated speedValue correctly
 function update() {
     frames++;
 
@@ -119,7 +120,7 @@ function update() {
     if (keystate[KEY_RIGHT] && snake.direction !== LEFT) snake.direction = RIGHT;
     if (keystate[KEY_DOWN] && snake.direction !== UP) snake.direction = DOWN;
 
-    // Movement everything every N (speed) frames. Speed = 1 is very fast
+    // Movement happens every 'speedValue' frames
     if (frames % speedValue === 0) {
         var nx = snake.last.x;
         var ny = snake.last.y;
@@ -146,7 +147,7 @@ function update() {
             return; 
         }
 
-        if (grid.get(nx, ny) === FOOD) {
+        if (grid.get(nx, ny) === FRUIT) {
             score++;
             setFood();
         } else {
@@ -178,7 +179,7 @@ function draw() {
             switch (grid.get(x, y)) {
                 case EMPTY: ctx.fillStyle = currentCanvasBg; break;
                 case SNAKE: ctx.fillStyle = currentSnakeColor; break;
-                case FOOD: ctx.fillStyle = "#ff4444"; break; 
+                case FRUIT: ctx.fillStyle = "#ff4444"; break; 
             }
             ctx.fillRect(x * tw, y * th, tw, th);
         }
@@ -203,7 +204,7 @@ if (speedSelect) {
     const savedSpeed = localStorage.getItem('snakeSpeed');
     if (savedSpeed) {
         speedSelect.value = savedSpeed;
-        speedValue= parseInt(savedSpeed);
+        speedValue = parseInt(savedSpeed);
     }
     speedSelect.addEventListener('change', (event) => {
         speedValue = parseInt(event.target.value);
