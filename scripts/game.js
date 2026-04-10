@@ -70,7 +70,7 @@ function main() {
 
     document.addEventListener("keydown", function(evt) {
         if (document.activeElement.tagName === "INPUT") return;
-        if([37, 38, 39, 40].indexOf(evt.keyCode) > -1) {
+        if([KEY_LEFT, KEY_UP, KEY_RIGHT, KEY_DOWN].indexOf(evt.keyCode) > -1) {
             evt.preventDefault();
         }
         keystate[evt.keyCode] = true;
