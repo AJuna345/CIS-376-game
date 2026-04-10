@@ -129,7 +129,7 @@ function update() {
         }
 
         // Game Over Check
-        if (nx <= 0 || nx >= grid.width || ny <= 0 || ny >= grid.height || grid.get(nx, ny) === SNAKE) {
+        if (nx < 0 || nx >= grid.width || ny < 0 || ny >= grid.height || grid.get(nx, ny) === SNAKE) {
             gameOver = true; 
             saveHighScore(score);
 
