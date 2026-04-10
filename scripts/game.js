@@ -100,9 +100,9 @@ function playGame() {
     if (!gameOver) {
         update();
         draw();
+        
+        window.requestAnimationFrame(playGame);
     }
-    
-    window.requestAnimationFrame(playGame);
 }
 
 function update() {
