@@ -2,7 +2,7 @@ var COLS = 26, ROWS = 26; // Width and height of the game board
 var EMPTY = 0, SNAKE = 1, FRUIT = 2;
 var LEFT  = 0, RIGHT = 1, UP = 2, DOWN  = 3;
 var KEY_LEFT = 37, KEY_RIGHT = 39, KEY_UP = 38, KEY_DOWN  = 40;
-var canvas, ctx, keystate, frames, score, isGameOver; 
+var canvas, ctx, keystate, frames, score, gameOver; 
 var speed = 7; // Default speed (Normal)
 
 // Cached Theme Colors
@@ -85,12 +85,12 @@ function main() {
     });
 
     init();
-    loop();
+    playGame();
 }
 
 // 6. Game Initialization
 function init() {
-    isGameOver = false; 
+    gameOver = false; 
     score = 0;
     updateThemeColors(); 
     grid.init(EMPTY, COLS, ROWS);
@@ -101,8 +101,8 @@ function init() {
 }
 
 // 7. The Game Loop
-function loop() {
-    if (!isGameOver) {
+function playGame() {
+    if (!gameOver) {
         update();
         draw();
     }
@@ -131,7 +131,7 @@ function update() {
 
         // Game Over Check
         if (nx < 0 || nx > grid.width || ny < 0 || ny > grid.height || grid.get(nx, ny) === SNAKE) {
-            isGameOver = true; 
+            gameOver = true; 
             saveHighScore(score);
 
             document.getElementById("finalScore").innerText = score; 
@@ -245,7 +245,7 @@ if (themeSelect) {
         localStorage.setItem('snakeTheme', selectedTheme);
         setTimeout(() => {
             updateThemeColors(); 
-            if (canvas && ctx && !isGameOver) draw();
+            if (canvas && ctx && !gameOver) draw();
         }, 50);
     });
 }
@@ -264,7 +264,7 @@ function unlockGarfieldTheme() {
     localStorage.setItem('snakeTheme', 'garfield');
     setTimeout(() => {
         updateThemeColors();
-        if (canvas && ctx && !isGameOver) draw();
+        if (canvas && ctx && !gameOver) draw();
     }, 50);
 }
 
