@@ -82,7 +82,7 @@ function main() {
     });
 
     initGame();
-    playGame();
+    setTimeout(playGame, 1000); // Give the player one second before a new game starts
 }
 
 function initGame() {
