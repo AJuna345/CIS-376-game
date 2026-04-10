@@ -161,13 +161,14 @@ function saveHighScore(latestScore) {
     localStorage.setItem('snakeLeaderboard', JSON.stringify(highScores));
 }
 
-// 9. Draw Everything
+// Draw the Game Board (grid)
 function draw() {
     var tw = canvas.width / grid.width;
     var th = canvas.height / grid.height;
 
     for (var x = 0; x < grid.width; x++) {
         for (var y = 0; y < grid.height; y++) {
+            // Draw a filled rectangle with the color of the grid value (empty, snake, or food)
             switch (grid.get(x, y)) {
                 case EMPTY: ctx.fillStyle = canvasBg; break;
                 case SNAKE: ctx.fillStyle = snakeColor; break;
@@ -176,11 +177,12 @@ function draw() {
             ctx.fillRect(x * tw, y * th, tw, th);
         }
     }
+
+    // Draw the player score on top of everything else on the game board
     ctx.fillStyle = textColor;
     ctx.fillText("SCORE: " + score, 10, canvas.height - 10);
 }
 
-// 10. Logic & Event Listeners
 document.getElementById("restartBtn").addEventListener("click", function() {
     document.getElementById("gameOverScreen").classList.add("hidden"); 
     initGame(); 
@@ -263,7 +265,6 @@ function unlockGarfieldTheme() {
     }, 50);
 }
 
-// 11. Start Game Logic
 document.addEventListener("DOMContentLoaded", function() {
     const startBtn = document.getElementById("startBtn");
     if (startBtn) {
