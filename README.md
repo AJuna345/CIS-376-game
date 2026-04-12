@@ -72,9 +72,9 @@ I want to track player high scores on a leaderboard and remember them between ga
   - Theme selector
   - Difficulty selector
 - How to Play page
-- LocalStorage for player settings and leaderboard data
-- Modal leaderboard with clear button
 - Keyboard controls (up, down, left, right)
+- LocalStorage used to store player settings and leaderboard data
+- Modal leaderboard with a button to clear all scores
 - Accessible status announcements with `aria-live`
 - Garfield Easter egg theme
 
