@@ -17,8 +17,8 @@ Game and user interface development by **Aiden (A.J.) Ramsden**
   - [Constraint Validation API](https://developer.mozilla.org/en-US/docs/Learn/Forms/Form_validation)
   - [aria-live](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Live_Regions)
 - [Advanced CSS Selectors](https://www.w3.org/TR/selectors-4/)
-  - `:nth-child(odd)` selects odd-numbered list items.
-  - `[target="_blank"]` selects links that open in a new tab.
+  - [:nth-child(odd)](https://www.w3.org/TR/selectors-4/#the-nth-child-pseudo) selects odd-numbered list items.
+  - [[target="_blank"]](https://www.w3.org/TR/selectors-4/#attribute-selectors) selects links that open in a new tab.
 - [Bootstrap 5.3](https://getbootstrap.com/)
   - [Bootstrap Navbar](https://getbootstrap.com/docs/5.3/components/navbar/) is used for the top navigation bar in my Snake Game project.
 - [WebAIM](https://webaim.org/)
