@@ -228,7 +228,6 @@ function draw() {
 // Get Settings form, Player options, and inline error messages
 const settingsForm = document.getElementById('settingsForm');
 const nameInput = document.getElementById('playerName');
-const saveBtn = document.getElementById('saveNameBtn');
 const greeting = document.getElementById('greetingMessage');
 const speedSelect = document.getElementById('speedSelect');
 
@@ -257,15 +256,75 @@ if (savedName) {
     }
 }
 
-if (saveBtn) {
-    saveBtn.addEventListener('click', () => {
-        const playerName = nameInput.value.trim();
-        if (playerName !== "") {
-            savePlayerName(playerName);
-            greeting.textContent = `Name saved as ${playerName}!`;
-            if (playerName.toLowerCase() === "garfield") {
-                unlockGarfieldTheme();
+if (settingsForm) {
+    settingsForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        // Clear old inline errors
+        if (playerNameError) playerNameError.textContent = '';
+        if (themeError) themeError.textContent = '';
+        if (speedError) speedError.textContent = '';
+
+        if (nameInput) nameInput.setCustomValidity('');
+        if (themeSelect) themeSelect.setCustomValidity('');
+        if (speedSelect) speedSelect.setCustomValidity('');
+
+        // Player name validation
+        if (nameInput) {
+            if (nameInput.validity.valueMissing) {
+                nameInput.setCustomValidity('Please enter a player name.');
+                if (playerNameError) playerNameError.textContent = 'Please enter a player name.';
+            } else if (nameInput.validity.tooShort) {
+                nameInput.setCustomValidity('Name must be at least 2 characters.');
+                if (playerNameError) playerNameError.textContent = 'Name must be at least 2 characters.';
+            } else if (nameInput.validity.tooLong) {
+                nameInput.setCustomValidity('Name must be 12 characters or fewer.');
+                if (playerNameError) playerNameError.textContent = 'Name must be 12 characters or fewer.';
+            } else if (nameInput.validity.patternMismatch) {
+                nameInput.setCustomValidity('Use only letters, numbers, and spaces.');
+                if (playerNameError) playerNameError.textContent = 'Use only letters, numbers, and spaces.';
             }
+        }
+
+        // Theme validation
+        if (themeSelect && !themeSelect.value) {
+            themeSelect.setCustomValidity('Please choose a theme.');
+            if (themeError) themeError.textContent = 'Please choose a theme.';
+        }
+
+        // Difficulty validation
+        if (speedSelect && !speedSelect.value) {
+            speedSelect.setCustomValidity('Please choose a difficulty.');
+            if (speedError) speedError.textContent = 'Please choose a difficulty.';
+        }
+
+        if (!settingsForm.checkValidity()) {
+            settingsForm.reportValidity();
+            return;
+        }
+
+        const playerName = nameInput.value.trim();
+        const selectedTheme = themeSelect.value;
+        const selectedSpeed = parseInt(speedSelect.value);
+
+        savePlayerName(playerName);
+        saveTheme(selectedTheme);
+        saveSpeed(selectedSpeed);
+
+        speed = selectedSpeed;
+        document.body.className = `theme-${selectedTheme}`;
+
+        if (greeting) {
+            greeting.textContent = `Settings saved for ${playerName}!`;
+        }
+
+        if (playerName.toLowerCase() === "garfield") {
+            unlockGarfieldTheme();
+        } else {
+            setTimeout(() => {
+                updateThemeColors();
+                if (canvas && ctx) draw();
+            }, 50);
         }
     });
 }
