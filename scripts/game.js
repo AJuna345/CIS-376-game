@@ -225,20 +225,26 @@ function draw() {
     ctx.fillText("SCORE: " + score, 10, canvas.height - 10);
 }
 
+// Get Settings form, Player options, and inline error messages
+const settingsForm = document.getElementById('settingsForm');
 const nameInput = document.getElementById('playerName');
 const saveBtn = document.getElementById('saveNameBtn');
 const greeting = document.getElementById('greetingMessage');
 const speedSelect = document.getElementById('speedSelect');
+const themeSelect = document.getElementById('themeSelect');
+
+const playerNameError = document.getElementById('playerNameError');
+const themeError = document.getElementById('themeError');
+const speedError = document.getElementById('speedError');
 
 // Load saved speed settings
 if (speedSelect) {
     const savedSpeed = getSpeed();
-    speedSelect.value = savedSpeed;
+    speedSelect.value = String(savedSpeed);
     speed = parseInt(savedSpeed);
 
     speedSelect.addEventListener('change', (event) => {
         speed = parseInt(event.target.value);
-        saveSpeed(speed);
     });
 }
 
