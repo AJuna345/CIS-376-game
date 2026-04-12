@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (scores.length === 0) {
             leaderboardBody.innerHTML = `
                 <tr>
-                    <td colspan="3" class="text-muted py-3">No scores yet. Play a game to get on the board!</td>
+                    <td colspan="3" class="text-muted py-3">No high scores yet</td>
                 </tr>`;
             return;
         }
