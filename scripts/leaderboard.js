@@ -1,21 +1,22 @@
 document.addEventListener('DOMContentLoaded', () => {
     const leaderboardBody = document.getElementById('leaderboard-body');
     const leaderboardModal = document.getElementById('leaderboardModal');
+    const clearLeaderboardBtn = document.getElementById('clearLeaderboardBtn');
 
     // Function to fetch and draw the scores
     function loadLeaderboard() {
         if (!leaderboardBody) return;
 
-        // 1. Get scores from LocalStorage (change 'snakeScores' if you used a different key)
+        // Get leaderboard scores from LocalStorage
         let scores = JSON.parse(localStorage.getItem('snakeLeaderboard')) || [];
         
-        // 2. Sort scores from highest to lowest
+        // Sort scores from highest to lowest
         scores.sort((a, b) => b.score - a.score);
 
-        // 3. Clear the existing table rows
+        // Clear the table
         leaderboardBody.innerHTML = '';
 
-        // 4. If no scores exist, show a friendly message
+        // Show a message if there are no scores yet
         if (scores.length === 0) {
             leaderboardBody.innerHTML = `
                 <tr>
@@ -24,8 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // 5. Inject the top scores into the table
-        // .slice(0, 10) ensures we only show the Top 10!
+        // Add the scores into the table
         scores.slice(0, 10).forEach((entry, index) => {
             const row = document.createElement('tr');
             row.innerHTML = `
@@ -37,11 +37,22 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Load the scores when the page first loads just in case
+    // Clear the leaderboard
+    function clearLeaderboard() {
+        localStorage.removeItem('snakeLeaderboard');
+        loadLeaderboard();
+    }
+
+    // Load the scores when the page first loads
     loadLeaderboard();
 
-    // MAGIC FIX: Re-load the scores EVERY TIME the modal pops open!
+    // Load the leaderboard scores when the modal is shown
     if (leaderboardModal) {
         leaderboardModal.addEventListener('show.bs.modal', loadLeaderboard);
+    }
+
+    // Clear scores when button is clicked
+    if (clearLeaderboardBtn) {
+        clearLeaderboardBtn.addEventListener('click', clearLeaderboard);
     }
 });
