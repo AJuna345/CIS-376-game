@@ -1,3 +1,4 @@
+// Import saved Player settings and Leaderboard functions from storage.js using an ES module
 import {
     getPlayerName,
     savePlayerName,
@@ -8,7 +9,6 @@ import {
     saveHighScore
 } from './storage.js';
 
-// 1. Setup Constants and Variables
 var WIDTH = 26, HEIGHT = 26; // Width and height of the game board
 var EMPTY = 0, SNAKE = 1, FOOD = 2;
 var LEFT  = 0, RIGHT = 1, UP = 2, DOWN  = 3;
@@ -19,7 +19,7 @@ var foodScore = 1; // Increase scores with higher difficulty levels/speeds
 var gameStarted = false;
 var animationStarted = false;
 
-// Cached Theme Colors
+// Default Theme Colors
 var snakeColor = "#28a745";
 var canvasBg = "#ffffff";
 var textColor = "#333333";
@@ -32,7 +32,7 @@ function updateThemeColors() {
     textColor = computedStyle.getPropertyValue('--text-color').trim() || "#333333";
 }
 
-// Create the game board grid
+// Create the gameboard grid
 var grid = {
     width: null, height: null, _grid: null,
     init: function(d, c, r) {
@@ -292,13 +292,13 @@ if (settingsForm) {
             }
         }
 
-        // Theme validation
+        // Validate the Theme
         if (themeSelect && !themeSelect.value) {
             themeSelect.setCustomValidity('Please select a theme.');
             if (themeError) themeError.textContent = 'Please choose a theme.';
         }
 
-        // Difficulty validation
+        //Validate the Difficulty level
         if (speedSelect && !speedSelect.value) {
             speedSelect.setCustomValidity('Please select a difficulty.');
             if (speedError) speedError.textContent = 'Please choose a difficulty.';
@@ -342,6 +342,7 @@ if (themeSelect) {
     document.body.className = `theme-${savedTheme}`;
     setTimeout(updateThemeColors, 50);
 
+    // Update the game theme when the user selects a new one
     themeSelect.addEventListener('change', (event) => {
         const selectedTheme = event.target.value;
         document.body.className = `theme-${selectedTheme}`;
@@ -353,6 +354,7 @@ if (themeSelect) {
     });
 }
 
+// Add the Garfield Easter Egg theme and switch the game to it
 function unlockGarfieldTheme() {
     const themeSelect = document.getElementById('themeSelect');
     let garfieldOption = themeSelect.querySelector('option[value="garfield"]');
