@@ -68,11 +68,11 @@ I want to track player high scores on a leaderboard and remember them between ga
 ## Wireframes
 Wireframe images for Snake Game
 
-![Wireframe 1](images/Wireframe-1.jpg)
-![Wireframe 2](images/Wireframe-2.jpg)
-![Wireframe 3](images/Wireframe-3.jpg)
-![Wireframe 4](images/Wireframe-4.jpg)
-![Wireframe 5](images/Wireframe-5.jpg)
+![Home/Start](images/Wireframe-1.jpg)
+![Gameboard](images/Wireframe-2.jpg)
+![How to Play](images/Wireframe-3.jpg)
+![Leaderboard](images/Wireframe-4.jpg)
+![Game Over](images/Wireframe-5.jpg)
 
 ## Project Features
 - Playable Snake game with Bootstrap navbar
