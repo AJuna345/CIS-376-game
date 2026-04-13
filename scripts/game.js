@@ -241,6 +241,16 @@ const playerNameError = document.getElementById('playerNameError');
 const themeError = document.getElementById('themeError');
 const speedError = document.getElementById('speedError');
 
+// Clear player name errors when they type in a new one
+if (nameInput) {
+    nameInput.addEventListener('input', () => {
+        nameInput.setCustomValidity('');
+        if (playerNameError) {
+            playerNameError.textContent = '';
+        }
+    });
+}
+
 // Load saved speed settings
 if (speedSelect) {
     const savedSpeed = getSpeed();
