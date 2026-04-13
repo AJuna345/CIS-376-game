@@ -65,6 +65,15 @@ I want to track player high scores on a leaderboard and remember them between ga
   - This project was inspired by simple retro browser and arcade Snake games
   - I used a clean one-page layout with a separate How to Play page, a settings form, and a modal leaderboard to make the game more polished and user-friendly
 
+## Wireframes
+Wireframe images for Snake Game
+
+![Wireframe 1](images/Wireframe-1.jpg)
+![Wireframe 2](images/Wireframe-2.jpg)
+![Wireframe 3](images/Wireframe-3.jpg)
+![Wireframe 4](images/Wireframe-4.jpg)
+![Wireframe 5](images/Wireframe-5.jpg)
+
 ## Project Features
 - Playable Snake game with Bootstrap navbar
 - Player Name and Settings
